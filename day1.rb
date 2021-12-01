@@ -1,5 +1,6 @@
 $LOAD_PATH << './lib'
 require 'file_management.rb'
+require 'benchmark'
 include FileManagement
 
 depth_data =  getData("data/inputday1.txt")
@@ -30,5 +31,6 @@ def count_increase_three_measurement_window (depth_data)
     return count_increases(summed_three_measurements)
 end
 
-puts count_increases(depth_data)
-puts count_increase_three_measurement_window(depth_data)
+puts Benchmark.realtime { puts count_increases(depth_data)}
+
+puts Benchmark.realtime {puts count_increase_three_measurement_window(depth_data)}
