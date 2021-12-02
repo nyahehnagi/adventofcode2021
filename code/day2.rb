@@ -8,8 +8,8 @@ movement_data =  getData("data/inputday2.txt")
 
 
 submarine = Submarine.new
-movement_data.each do |item|
-    submarine.move_instruction (item)
+movement_data.each do |instruction|
+    submarine.move_instruction (instruction)
 end
 
 puts submarine.horizontal_distance * submarine.depth

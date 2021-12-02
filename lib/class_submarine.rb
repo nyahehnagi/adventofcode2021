@@ -6,6 +6,7 @@ class Submarine
     def initialize
         @depth = 0
         @horizontal_distance = 0
+        @aim = 0
     end
 
     DIRECTION = {
@@ -23,10 +24,11 @@ class Submarine
         case direction
         when DIRECTION[:forward]
             @horizontal_distance += distance
+            @depth += (@aim * distance)
         when  DIRECTION[:down]
-            @depth += distance
+            @aim += distance
         when  DIRECTION[:up]
-            @depth -= distance
+            @aim -= distance
         else
             #in error, do nothing for the time being
         end
