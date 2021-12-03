@@ -1,5 +1,6 @@
 # to run the test use the below command in the terminal
 # rspec spec/day1_spec.rb
+# rspec spec/day1_spec.rb --format doc
 
 require "day1.rb"
 
