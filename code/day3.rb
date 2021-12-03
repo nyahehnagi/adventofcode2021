@@ -37,13 +37,11 @@ epsilon_rate_decimal =  gamme_rate_decimal ^ bit_mask.to_i(2)
 #output part 1 answer
 puts epsilon_rate_decimal * gamme_rate_decimal
 
-
-
 #part 2
 
 #create copy of bit_hash to work on
-def deep_copy(o)
-    Marshal.load(Marshal.dump(o))
+def deep_copy(obj)
+    Marshal.load(Marshal.dump(obj))
 end
 
 bit_hash_oxygen = deep_copy(bit_hash)
@@ -55,36 +53,31 @@ def remove_chars(str, indices)
     str
 end
 
+# from the passed bit string the bit to be deleted is deleted along with it's corresponding position bits in the rest of the hash 
+def remove_bits (hash_of_bit_strings, bit_string, bit_to_delete)
+    indexes_to_delete = []
+    bit_string.each_char.with_index do |bit, index|
+        if bit == bit_to_delete
+            indexes_to_delete << index
+        end 
+    end
+    #delete the values at specified index per key
+    hash_of_bit_strings.each_value do |bits|
+        bits = remove_chars(bits,indexes_to_delete)
+    end
+
+end
+
 bit_hash_oxygen.each_value do |bits|
     # if we have one value left in our hash.. we have our value
     break if bit_hash_oxygen[0].length == 1
     
     if bits.count('1') >= bits.count('0') 
         # keep the ones
-        indexes_to_delete = []
-        bits.each_char.with_index do |bit, index|
-            if bit == "0"
-                indexes_to_delete << index
-            end 
-        end
-
-        #delete the values at specified index per key
-        bit_hash_oxygen.each_value do |bits|
-            bits = remove_chars(bits,indexes_to_delete)
-        end
-
+        remove_bits(bit_hash_oxygen,bits,"0")
     else
         #keep the zeroes
-        indexes_to_delete = []
-        bits.each_char.with_index do |bit, index|
-            if bit == "1"
-                indexes_to_delete << index
-            end 
-        end
-        #delete the values at specified index per key
-        bit_hash_oxygen.each_value do |bits|
-            bits = remove_chars(bits,indexes_to_delete)
-        end
+        remove_bits(bit_hash_oxygen,bits,"1")
     end
     
 end
@@ -95,56 +88,23 @@ bit_hash_co2.each_value do |bits|
     
     if bits.count('1') == bits.count('0') 
         # keep the zeros
-        indexes_to_delete = []
-        bits.each_char.with_index do |bit, index|
-            if bit == "1"
-                indexes_to_delete << index
-            end 
-        end
-
-        #delete the values at specified index per key
-        bit_hash_co2.each_value do |bits|
-            bits = remove_chars(bits,indexes_to_delete)
-        end
+        remove_bits(bit_hash_co2,bits,"1")
 
     elsif bits.count('1') < bits.count('0') 
         # keep the ones
-        indexes_to_delete = []
-        bits.each_char.with_index do |bit, index|
-            if bit == "0"
-                indexes_to_delete << index
-            end 
-        end
-        #delete the values at specified index per key
-        bit_hash_co2.each_value do |bits|
-            bits = remove_chars(bits,indexes_to_delete)
-        end
-
+        remove_bits(bit_hash_co2,bits,"0")
     else
         #keep the zeroes
-        indexes_to_delete = []
-        bits.each_char.with_index do |bit, index|
-            if bit == "1"
-                indexes_to_delete << index
-            end 
-        end
-        #delete the values at specified index per key
-        bit_hash_co2.each_value do |bits|
-            bits = remove_chars(bits,indexes_to_delete)
-        end
+        remove_bits(bit_hash_co2,bits,"1")
     end
 end
-   
-puts bit_hash_oxygen
-puts bit_hash_co2
-#convert to string an decimalise
+
+
+#convert to string and decimalise
 oxygen_string = ""
 co2_string = ""
 bit_hash_oxygen.each_value{|v| oxygen_string += v}
 bit_hash_co2.each_value{|v| co2_string += v}
-
-puts oxygen_string.to_i(2)
-puts co2_string.to_i(2)
 
 puts oxygen_string.to_i(2) * co2_string.to_i(2)
 
