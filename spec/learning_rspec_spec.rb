@@ -1,20 +1,12 @@
 
-class HelloWorld
+require "learning_rspec.rb"
 
-    def say_hello 
-       "Hello World!"
-    end
-    
- end
- 
- describe HelloWorld do 
-    context “When testing the HelloWorld class” do 
-       
+ RSpec.describe HelloWorld do 
+    describe '#say hello world' do 
        it "should say 'Hello World' when we call the say_hello method" do 
           hw = HelloWorld.new 
           message = hw.say_hello 
           expect(message).to eq "Hello World!"
        end
-       
     end
  end
