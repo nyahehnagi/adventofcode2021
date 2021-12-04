@@ -2,6 +2,8 @@
 $LOAD_PATH << './lib'
 require 'file_management.rb'
 require 'benchmark'
+require 'securerandom'
+
 include FileManagement
 
 bingo_data =  getData("data/inputday4.txt")
@@ -9,7 +11,12 @@ bingo_data =  getData("data/inputday4.txt")
 
 class BingoCard
 
+    attr_accessor :card_marked_won, :winning_number
+
     def initialize (bingo_card_numbers)
+        @uuid = SecureRandom.uuid
+        @card_marked_won = false
+        @winning_number = -1
         @bingo_card_rows = []
         generate_bingo_card(bingo_card_numbers)
     end
@@ -28,12 +35,13 @@ class BingoCard
 
         score = 0
         if winning_number == true
-           score = calculate_score() 
+            @card_marked_won = true
+            @winning_number = number
+            score = calculate_score() 
         end
         return score
     end
-
-    private 
+ 
 
     def is_winning_number ()
         #check rows
@@ -62,7 +70,6 @@ class BingoCard
     end
 
     def calculate_score()
-        sum = 0
         tmp = []
         @bingo_card_rows.each do |row|
             tmp << row.select { |bingo_number| bingo_number.matched == false }
@@ -107,6 +114,7 @@ class BingoGame
     def initialize (bingo_data)
         @bingo_game_numbers = [] 
         @bingo_cards = []
+        @last_card_to_win
         generate_bingo_numbers(bingo_data)
         generate_bingo_cards(bingo_data)
     end
@@ -133,6 +141,7 @@ class BingoGame
         winner_found = false
         score = 0
         number = 0
+
         loop do
             
             puts "playing number: #{@bingo_game_numbers[number_counter]}"
@@ -157,8 +166,38 @@ class BingoGame
         
         return overall_score
     end
+
+    def play_game_find_last
+        number_counter = 0
+        winner_found = false
+        score = 0
+        number = 0
+        cards_that_have_won= []
+
+       @bingo_game_numbers.each do |number|
+            
+            puts "playing number: #{number}"
+
+            @bingo_cards.each do |card|
+                if card.card_marked_won == false
+                    score = card.play_number(number)
+                    if score > 0
+                        cards_that_have_won << card
+                    end
+                end
+            end
+        end
+
+        score = cards_that_have_won.last.calculate_score
+        puts "The sum of the last one matched is: #{score}"
+        puts "The last number matched was #{cards_that_have_won.last.winning_number}"
+        puts "The answer is #{cards_that_have_won.last.winning_number.to_i * score.to_i }"
+    end
+
+
 end
 
 
 bingo_game = BingoGame.new(bingo_data)
-puts bingo_game.play_game
+#puts bingo_game.play_game
+bingo_game.play_game_find_last
