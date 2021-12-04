@@ -2,7 +2,6 @@
 $LOAD_PATH << './lib'
 require 'file_management.rb'
 require 'benchmark'
-require 'securerandom'
 
 include FileManagement
 
@@ -14,7 +13,6 @@ class BingoCard
     attr_accessor :card_marked_won, :winning_number
 
     def initialize (bingo_card_numbers)
-        @uuid = SecureRandom.uuid
         @card_marked_won = false
         @winning_number = -1
         @bingo_card_rows = []
@@ -47,44 +45,33 @@ class BingoCard
         #check rows
         @bingo_card_rows.each do |row|
             if row.select { |bingo_number| bingo_number.matched == true }.count == 5
-                
                 return true
             end
         end
 
-        5.times do |n|
-            match_count = 0
+        bingo_columns = @bingo_card_rows.transpose
 
-            @bingo_card_rows.each do |row|
-                if row[n].matched == true
-                    match_count += 1
-                end
-            end
-            
-            if match_count == 5
+        bingo_columns.each do |column|
+            if column.select { |bingo_number| bingo_number.matched == true }.count == 5
                 return true
             end
-         end 
+        end
 
-         return false
+        return false
     end
 
     def calculate_score()
-        tmp = []
+        unmatched_numbers = []
         @bingo_card_rows.each do |row|
-            tmp << row.select { |bingo_number| bingo_number.matched == false }
+            unmatched_numbers << row.select { |bingo_number| bingo_number.matched == false }
         end
 
-        tmp.flatten!
+        unmatched_numbers.flatten!
 
-        sum = 0
-        tmp.each do |item|
-            puts "This is non matched number from card : #{item.number}"
-            sum += item.number.to_i
-        end
+        sum =  unmatched_numbers.inject(0){|sum,x| sum + x.number.to_i }
 
         puts "Sum of non matched is: #{sum}"
-        #return tmp.inject(0){|sum,x| sum + x.number }
+        
         return sum
     end
 
@@ -114,7 +101,7 @@ class BingoGame
     def initialize (bingo_data)
         @bingo_game_numbers = [] 
         @bingo_cards = []
-        @last_card_to_win
+        @last_card_to_win 
         generate_bingo_numbers(bingo_data)
         generate_bingo_cards(bingo_data)
     end
@@ -143,14 +130,12 @@ class BingoGame
         number = 0
 
         loop do
-            
             puts "playing number: #{@bingo_game_numbers[number_counter]}"
             number = @bingo_game_numbers[number_counter]
 
             @bingo_cards.each do |card|
                 score = card.play_number(number)
                 if score > 0
-                    puts "WINNNER"
                     winner_found = true
                     break
                 end
