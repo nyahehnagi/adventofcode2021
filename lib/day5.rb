@@ -2,6 +2,7 @@
 $LOAD_PATH << './lib'
 require 'file_management.rb'
 require 'benchmark'
+require 'geometry.rb'
 
 include FileManagement
 
