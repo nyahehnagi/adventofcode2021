@@ -31,15 +31,16 @@ fish_in_days(fish_data_part1, 80)
 p fish_data_part1.count
 
 
-#calculate how many fish are created in 128 days for a fish at every gestation period (0..8) days
-fish_hash =  fish_data_part2.group_by(&:itself).map { |k,v| [k, v.count] }.to_h
-core_fish_data = []
+# Get the input data.
+fish_hash_initial =  fish_data_part2.group_by(&:itself).map { |k,v| [k, v.count] }.to_h
 
+#calculate how many fish are created in 128 days for a fish at every gestation period (0..8) days
+core_fish_data = []
 (0..8).each {|el| core_fish_data << fish_in_days([el], 128)} 
 
-# Work out how many fish we have in the first 128 days as my machine can handle these numbers :-)
+# With the input data, work out how many fish we have in the first 128 days as my machine can handle these numbers :-)
 first_pass = Hash.new()
-fish_hash.each do |key,value|
+fish_hash_initial.each do |key,value|
     core_fish_data[key].each do |k,v|
         total_fish = v * value
         if first_pass.has_key?(k)
@@ -49,8 +50,6 @@ fish_hash.each do |key,value|
         end
     end
 end
-
-puts first_pass
 
 # Now work out using the fish from the first 128 days, how many fish are made after the next 128 days
 second_pass = Hash.new()
@@ -64,7 +63,5 @@ first_pass.each do |key,value|
         end
     end
 end
-
-puts second_pass
 
 p second_pass.values.sum
