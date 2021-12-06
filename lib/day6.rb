@@ -31,6 +31,8 @@ fish_in_days(fish_data_part1, 80)
 p fish_data_part1.count
 
 
+# part 2
+
 # Get the input data.
 fish_hash_initial =  fish_data_part2.group_by(&:itself).map { |k,v| [k, v.count] }.to_h
 
