@@ -27,8 +27,8 @@ end
 
 
 # part 1 - 80 days
-#fish_in_days(fish_data_part1, 80)
-#p fish_data_part1.count
+fish_in_days(fish_data_part1, 80)
+p fish_data_part1.count
 
 
 #calculate how many fish are created in 128 days for a fish at every gestation period (0..8) days
@@ -37,7 +37,7 @@ core_fish_data = []
 
 (0..8).each {|el| core_fish_data << fish_in_days([el], 128)} 
 
-#{3=>2, 4=>1, 1=>1, 2=>1}
+# Work out how many fish we have in the first 128 days as my machine can handle these numbers :-)
 first_pass = Hash.new()
 fish_hash.each do |key,value|
     core_fish_data[key].each do |k,v|
