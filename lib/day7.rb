@@ -6,14 +6,8 @@ number_of_crabs_at_each_point =  crab_data.group_by(&:itself).map { |k,v| [k, v.
 min_x = crab_data.min
 min_y = crab_data.max
 
-
-def fuel_used(distance)
-    #nth triangular number 
-   return  (distance * (distance + 1)) / 2
-end
-
-# create look up for fuel used for the range of distances available
-fuel_look_up = (min_x..min_y).map{|distance| [distance, fuel_used(distance)]}.to_h
+# create look up for fuel used for the range of distances available, uses nth triangular number
+fuel_look_up = (min_x..min_y).map{|distance| [distance, (distance * (distance + 1)) / 2]}.to_h
 
 def fuel_to_point(position, number_of_crabs_at_each_point, fuel_look_up)
     number_of_crabs_at_each_point.map { |crab_position, multiplier| fuel_look_up[(crab_position - position).abs] *  multiplier }.sum
