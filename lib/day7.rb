@@ -8,9 +8,9 @@ min_y = crab_data.max
 
 
 def fuel_used(distance)
-    counter = 0
-    (distance).times {|count| counter += (count + 1)}
-    return counter
+    fuel_used = 0
+    (distance).times {|count| fuel_used += (count + 1)}
+    return fuel_used
 end
 
 # create look up for fuel used for the range of distances available
@@ -20,7 +20,7 @@ def fuel_to_point(position, number_of_crabs_at_each_point, fuel_look_up)
     number_of_crabs_at_each_point.map { |crab_position, multiplier| fuel_look_up[(crab_position - position).abs] *  multiplier }.sum
 end
 
-distance_to_points = (min_x..min_y).map {|position| fuel_to_point(position, number_of_crabs_at_each_point, fuel_look_up)}
+fuel_to_all_points = (min_x..min_y).map {|position| fuel_to_point(position, number_of_crabs_at_each_point, fuel_look_up)}
 
-p distance_to_points.min
+p fuel_to_all_points.min
 
