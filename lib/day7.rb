@@ -8,9 +8,8 @@ min_y = crab_data.max
 
 
 def fuel_used(distance)
-    fuel_used = 0
-    (distance).times {|count| fuel_used += (count + 1)}
-    return fuel_used
+    #nth triangular number 
+   return  (distance * (distance + 1)) / 2
 end
 
 # create look up for fuel used for the range of distances available
