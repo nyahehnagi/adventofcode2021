@@ -21,7 +21,6 @@ PLATFORMS
   x64-mingw32
 
 DEPENDENCIES
-  geometry
   rspec
 
 BUNDLED WITH
