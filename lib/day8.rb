@@ -63,7 +63,7 @@ signal_data.each do |line|
     seven_segment_display[1] = number_four.gsub(Regexp.new("[#{seven_segment_display.join}]") , "")
 
     ###################### SEGMENT 5 #######################
-    # Every we have found bar segment 5 can be derived from the number 8
+    # segment 5 can be derived from the number 8
     seven_segment_display[4] = number_eight.gsub(Regexp.new("[#{seven_segment_display.join}]") , "")
 
     number_zero = (seven_segment_display[0] + seven_segment_display[1] +  seven_segment_display[2]+  seven_segment_display[4] +  seven_segment_display[5] + seven_segment_display[6]).chars.sort.join
