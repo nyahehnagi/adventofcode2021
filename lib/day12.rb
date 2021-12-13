@@ -3,7 +3,7 @@ require 'file_management.rb'
 
 include FileManagement
 
-caves_map =  getData("data/inputday12test.txt")
+caves_map =  getData("data/inputday12.txt")
 
 cave_system = Hash.new()
 
@@ -22,13 +22,29 @@ p cave_system
 
 
 def in_path_so_far(path, cave)
-    # Is this cave been traversed as per the rules of only small caves cannot be traversed again
-    path.any? {|c| c == cave && cave == cave.downcase}
-
+    # when I am not tired, I will pull out the below programatically
+    small_caves = ["qu","vi","ae","pk","vt","hu"]
+    #small_caves = ["b","c","d"]
+    if small_caves.include?(cave)
+        if path.count("qu") == 2 || path.count("vi") == 2 || path.count("ae") == 2 || path.count("pk") == 2 || path.count("vt") == 2 || path.count("hu") == 2 
+        #if path.count("b") == 2 || path.count("c") == 2 || path.count("d") == 2
+            if path.count(cave) == 0
+                return false
+            else
+                return true
+            end
+        else
+            return false
+        end
+    else
+        retval = path.any? {|c| c == cave && cave == cave.downcase} 
+    end
 end
 
 
 def adjacent_caves(cave_system, cave)
+
+
     adjacent_cave_list = []
     #check keys
     if cave_system.has_key?(cave) 
@@ -69,4 +85,6 @@ start_cave = "start"
 end_cave = "end"
 
 possible_paths(cave_system, start_cave, end_cave, path_so_far, path_list)
+path_list.each {|item| p item}
 print path_list.count
+
